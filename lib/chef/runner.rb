@@ -34,7 +34,7 @@ class Chef
 
     def initialize(run_context)
       @run_context = run_context
-      run_context.runner = self
+      @run_context.runner = self
     end
 
     def delayed_actions
@@ -85,8 +85,20 @@ class Chef
       end
     end
 
-    # Iterates over the +resource_collection+ in the +run_context+ calling
-    # +run_action+ for each resource in turn.
+    # Runs all of the actions on a given resource.  This fires notifications and marks
+    # the resource as having been executed by the runner.
+    #
+    # @param resource [Chef::Resource] the resource to run
+    #
+    def run_all_actions(resource)
+      Array(resource.action).each { |action| run_action(resource, action) }
+    ensure
+      resource.executed_by_runner = true
+    end
+
+    # Iterates over the resource_collection in the run_context calling
+    # run_action for each resource in turn.
+    #
     def converge
       # Resolve all lazy/forward references in notifications
       run_context.resource_collection.each do |resource|
@@ -95,10 +107,8 @@ class Chef
 
       # Execute each resource.
       run_context.resource_collection.execute_each_resource do |resource|
-        begin
-          Array(resource.action).each { |action| run_action(resource, action) }
-        ensure
-          resource.executed_by_runner = true
+        if run_context.resource_collection.converge_mode
+          run_all_actions(resource)
         end
       end
 

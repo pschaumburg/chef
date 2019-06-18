@@ -453,7 +453,6 @@ class Chef
     #
     attr_reader :elapsed_time
 
-    #
     # @return [Boolean] If the resource was executed by the runner
     #
     attr_accessor :executed_by_runner
@@ -977,6 +976,16 @@ class Chef
     def self.use_automatic_resource_name
       automatic_name = convert_to_snake_case(name.split("::")[-1])
       resource_name automatic_name
+    end
+
+    # If the resource's action should run in separated compile/converge mode.
+    #
+    # @param flag [Boolean] value to set converge_mode to
+    # @return [Boolean] converge_mode value
+    def self.converge_mode(flag = nil)
+      @converge_mode = Chef::Config[:resource_converge_mode_default] if @converge_mode.nil?
+      @converge_mode = flag unless flag.nil?
+      !!@converge_mode
     end
 
     #

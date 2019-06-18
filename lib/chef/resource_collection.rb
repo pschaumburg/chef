@@ -1,7 +1,7 @@
 #
 # Author:: Adam Jacob (<adam@chef.io>)
 # Author:: Christopher Walters (<cw@chef.io>)
-# Copyright:: Copyright 2008-2016, Chef Software Inc.
+# Copyright:: Copyright 2008-2019, Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,6 +32,8 @@ class Chef
     include ResourceCollectionSerialization
     extend Forwardable
 
+    attr_accessor :converge_mode
+
     attr_reader :resource_set, :resource_list
     attr_accessor :run_context
 
@@ -41,6 +43,7 @@ class Chef
       @run_context = run_context
       @resource_set = ResourceSet.new
       @resource_list = ResourceList.new
+      @converge_mode = true
     end
 
     # @param resource [Chef::Resource] The resource to insert
@@ -56,6 +59,9 @@ class Chef
         resource_set.insert_as(resource, resource_type, instance_name)
       else
         resource_set.insert_as(resource)
+      end
+      unless converge_mode
+        run_context.runner.run_all_actions(resource)
       end
     end
 
