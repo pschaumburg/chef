@@ -241,7 +241,7 @@ class Chef
     def compile_and_converge_action(&block)
       old_run_context = run_context
       @run_context = run_context.create_child
-      @run_context.resource_collection.converge_mode = new_resource.class.converge_mode
+      @run_context.resource_collection.unified_mode = new_resource.class.unified_mode
       runner = Chef::Runner.new(@run_context)
       return_value = instance_eval(&block)
       runner.converge

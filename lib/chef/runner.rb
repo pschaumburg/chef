@@ -107,7 +107,7 @@ class Chef
 
       # Execute each resource.
       run_context.resource_collection.execute_each_resource do |resource|
-        if run_context.resource_collection.converge_mode
+        unless run_context.resource_collection.unified_mode
           run_all_actions(resource)
         end
       end

@@ -980,12 +980,12 @@ class Chef
 
     # If the resource's action should run in separated compile/converge mode.
     #
-    # @param flag [Boolean] value to set converge_mode to
-    # @return [Boolean] converge_mode value
-    def self.converge_mode(flag = nil)
-      @converge_mode = Chef::Config[:resource_converge_mode_default] if @converge_mode.nil?
-      @converge_mode = flag unless flag.nil?
-      !!@converge_mode
+    # @param flag [Boolean] value to set unified_mode to
+    # @return [Boolean] unified_mode value
+    def self.unified_mode(flag = nil)
+      @unified_mode = Chef::Config[:resource_unified_mode_default] if @unified_mode.nil?
+      @unified_mode = flag unless flag.nil?
+      !!@unified_mode
     end
 
     #

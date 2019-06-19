@@ -9,14 +9,14 @@ describe "LWRPs with inline resources" do
 
   let(:chef_client) { "bundle exec chef-client --minimal-ohai" }
 
-  when_the_repository "has a cookbook with a no converge_mode resource with a delayed notification" do
+  when_the_repository "has a cookbook with a unified_mode resource with a delayed notification" do
     before do
       directory "cookbooks/x" do
 
-        file "resources/no_converge_mode.rb", <<-EOM
-          converge_mode false
-          resource_name :no_converge_mode
-          provides :no_converge_mode
+        file "resources/unified_mode.rb", <<-EOM
+          unified_mode true
+          resource_name :unified_mode
+          provides :unified_mode
 
           action :doit do
             klass = new_resource.class
@@ -39,7 +39,7 @@ describe "LWRPs with inline resources" do
         EOM
 
         file "recipes/default.rb", <<-EOM
-          no_converge_mode "whatever"
+          unified_mode "whatever"
         EOM
 
       end # directory 'cookbooks/x'
@@ -68,14 +68,14 @@ describe "LWRPs with inline resources" do
     end
   end
 
-  when_the_repository "has a cookbook with a no converge_mode resource with an immediate notification" do
+  when_the_repository "has a cookbook with a no unified_mode resource with an immediate notification" do
     before do
       directory "cookbooks/x" do
 
-        file "resources/no_converge_mode.rb", <<-EOM
-          converge_mode false
-          resource_name :no_converge_mode
-          provides :no_converge_mode
+        file "resources/unified_mode.rb", <<-EOM
+          unified_mode true
+          resource_name :unified_mode
+          provides :unified_mode
           action :doit do
             klass = new_resource.class
             var = "foo"
@@ -97,7 +97,7 @@ describe "LWRPs with inline resources" do
         EOM
 
         file "recipes/default.rb", <<-EOM
-          no_converge_mode "whatever"
+          unified_mode "whatever"
         EOM
 
       end # directory 'cookbooks/x'
@@ -130,9 +130,9 @@ describe "LWRPs with inline resources" do
     before do
       directory "cookbooks/x" do
 
-        file "resources/no_converge_mode.rb", <<-EOM
-          resource_name :no_converge_mode
-          provides :no_converge_mode
+        file "resources/unified_mode.rb", <<-EOM
+          resource_name :unified_mode
+          provides :unified_mode
 
           action :doit do
             klass = new_resource.class
@@ -155,7 +155,7 @@ describe "LWRPs with inline resources" do
         EOM
 
         file "recipes/default.rb", <<-EOM
-          no_converge_mode "whatever"
+          unified_mode "whatever"
         EOM
 
       end # directory 'cookbooks/x'
@@ -163,7 +163,7 @@ describe "LWRPs with inline resources" do
 
     it "should complete with success" do
       file "config/client.rb", <<~EOM
-        resource_converge_mode_default false
+        resource_unified_mode_default true
         local_mode true
         cookbook_path "#{path_to('cookbooks')}"
         log_level :warn
@@ -189,9 +189,9 @@ describe "LWRPs with inline resources" do
     before do
       directory "cookbooks/x" do
 
-        file "resources/no_converge_mode.rb", <<-EOM
-          resource_name :no_converge_mode
-          provides :no_converge_mode
+        file "resources/unified_mode.rb", <<-EOM
+          resource_name :unified_mode
+          provides :unified_mode
           action :doit do
             klass = new_resource.class
             var = "foo"
@@ -213,7 +213,7 @@ describe "LWRPs with inline resources" do
         EOM
 
         file "recipes/default.rb", <<-EOM
-          no_converge_mode "whatever"
+          unified_mode "whatever"
         EOM
 
       end # directory 'cookbooks/x'
@@ -221,7 +221,7 @@ describe "LWRPs with inline resources" do
 
     it "should complete with success" do
       file "config/client.rb", <<~EOM
-        resource_converge_mode_default false
+        resource_unified_mode_default true
         local_mode true
         cookbook_path "#{path_to('cookbooks')}"
         log_level :warn
@@ -262,7 +262,7 @@ describe "LWRPs with inline resources" do
 
     it "should complete with success" do
       file "config/client.rb", <<~EOM
-        resource_converge_mode_default false
+        resource_unified_mode_default true
         local_mode true
         cookbook_path "#{path_to('cookbooks')}"
         log_level :warn

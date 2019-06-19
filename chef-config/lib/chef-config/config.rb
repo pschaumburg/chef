@@ -897,13 +897,11 @@ module ChefConfig
     #
     default :cookbook_sync_threads, 10
 
-    # True if all resources by default get split compile/converge mode.  True is the
-    # backwards compatible setting for Chef 11-15.  Setting this to false will
-    # eliminate the execution of resources at converge time, it will force all
-    # resources to copmile time, and will break forward notifications to resources
-    # that have not yet been declared.
+    # True if all resources by default default to unified mode, with all resources
+    # applying in "compile" mode, with no "converge" mode. False is backwards compatible
+    # setting for Chef 11-15 behavior.  This will break forward notifications.
     #
-    default :resource_converge_mode_default, true
+    default :resource_unified_mode_default, false
 
     # At the beginning of the Chef Client run, the cookbook manifests are downloaded which
     # contain URLs for every file in every relevant cookbook.  Most of the files

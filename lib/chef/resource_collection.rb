@@ -32,7 +32,7 @@ class Chef
     include ResourceCollectionSerialization
     extend Forwardable
 
-    attr_accessor :converge_mode
+    attr_accessor :unified_mode
 
     attr_reader :resource_set, :resource_list
     attr_accessor :run_context
@@ -43,7 +43,7 @@ class Chef
       @run_context = run_context
       @resource_set = ResourceSet.new
       @resource_list = ResourceList.new
-      @converge_mode = true
+      @unified_mode = false
     end
 
     # @param resource [Chef::Resource] The resource to insert
@@ -60,7 +60,7 @@ class Chef
       else
         resource_set.insert_as(resource)
       end
-      unless converge_mode
+      if unified_mode
         run_context.runner.run_all_actions(resource)
       end
     end
